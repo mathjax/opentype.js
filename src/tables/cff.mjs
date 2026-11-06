@@ -313,9 +313,9 @@ function interpretDict(dict, meta, strings) {
                 value = getCFFString(strings, value);
             }
             if (m.type === 'delta' && value !== null) {
-                if (!Array.isArray(value)) {
-                    throw new Error('Read delta data invalid');
-                }
+//                if (!Array.isArray(value)) {
+//                    throw new Error('Read delta data invalid');
+//                }
                 // Convert delta array to human readable version
                 let current = 0;
                 for(let i = 0; i < value.length; i++) {

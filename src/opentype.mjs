@@ -37,6 +37,7 @@ import post from './tables/post.mjs';
 import meta from './tables/meta.mjs';
 import gasp from './tables/gasp.mjs';
 import svg from './tables/svg.mjs';
+import math from './tables/math.mjs';
 import { PaletteManager } from './palettes.mjs';
 /**
  * The opentype library.
@@ -193,6 +194,7 @@ function parseBuffer(buffer, opt={}) {
     let locaTableEntry;
     let nameTableEntry;
     let metaTableEntry;
+    let mathTableEntry;
     let p;
 
     for (let i = 0; i < numTables; i += 1) {
@@ -322,6 +324,9 @@ function parseBuffer(buffer, opt={}) {
                 table = uncompressTable(data, tableEntry);
                 font.tables.svg = svg.parse(table.data, table.offset);
                 break;
+             case 'MATH':
+                mathTableEntry = tableEntry;
+                break;
             default:
                 // console.info(`Skipping unsupported table ${tableEntry.tag}`);
                 break;
@@ -437,6 +442,11 @@ function parseBuffer(buffer, opt={}) {
         font.metas = font.tables.meta;
     }
     
+     if (mathTableEntry) {
+        const mathTable = uncompressTable(data, mathTableEntry);
+        font.tables.math = math.parse(mathTable.data, mathTable.offset);
+    }
+
     font.palettes = new PaletteManager(font);
 
     return font;
