@@ -313,14 +313,15 @@ function interpretDict(dict, meta, strings) {
                 value = getCFFString(strings, value);
             }
             if (m.type === 'delta' && value !== null) {
-//                if (!Array.isArray(value)) {
-//                    throw new Error('Read delta data invalid');
-//                }
-                // Convert delta array to human readable version
-                let current = 0;
-                for(let i = 0; i < value.length; i++) {
-                    value[i] = value[i] + current;
-                    current = value[i];
+                if (!Array.isArray(value)) {
+                    value = [value];
+                } else {
+                    // Convert delta array to human readable version
+                    let current = 0;
+                    for(let i = 0; i < value.length; i++) {
+                        value[i] = value[i] + current;
+                        current = value[i];
+                    }
                 }
             }
             newDict[m.name] = value;
@@ -419,9 +420,6 @@ const PRIVATE_DICT_META = [
     {name: 'languageGroup', op: 1217, type: 'number', value: 0},
     {name: 'expansionFactor', op: 1218, type: 'number', value: 0.06},
     {name: 'subrs', op: 19, type: 'offset'},
-    {name: 'defaultWidthX', op: 20, type: 'number', value: 0},
-    {name: 'nominalWidthX', op: 21, type: 'number', value: 0},
-    {name: 'subrs', op: 19, type: 'offset', value: 0},
     {name: 'defaultWidthX', op: 20, type: 'number', value: 0},
     {name: 'nominalWidthX', op: 21, type: 'number', value: 0}
 ];
